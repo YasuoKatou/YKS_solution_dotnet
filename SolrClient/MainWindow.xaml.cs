@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -49,11 +50,18 @@ namespace solr.client
             SolrSearchResponseDto dto = this.webService.searchString<SolrSearchResponseDto>(searchWord);
             this.txtQTime.Text = String.Format("検索時間 : {0} ms", dto.responseHeader.QTime);
 
-            ListView v = this.FindName("lstSearchResultView") as ListView;
-            foreach (SearchDocument docItem in dto.responseData.docs)
+            Binding bind = new Binding();
+            bind.Source = new SearchResultTitles(dto.responseData.docs);
+            this.lstSearchResultView.SetBinding(ListBox.ItemsSourceProperty, bind);
+        }
+    }
+    public class SearchResultTitles : ObservableCollection<string>
+    {
+        public SearchResultTitles(SearchDocument[] docs)
+        {
+            foreach (SearchDocument docItem in docs)
             {
-                // ListViewItem vi = 
-                v.Items.Add(docItem.title[0]);
+                this.Add(docItem.title[0]);
             }
         }
     }

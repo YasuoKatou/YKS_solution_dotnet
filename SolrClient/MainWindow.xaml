@@ -35,18 +35,13 @@
       </Grid>
 
     <!-- （Ｂ） -->
-      <ListView Grid.Row="1" Grid.Column="1" x:Name="lstSearchResultView">
-            <!--
-        <ListView.View>
-          <GridView>
-            <GridViewColumn Header="タイトル" />
-            <GridViewColumn Width="Auto">
-              <GridViewColumnHeader Name="columnheaderField1" Content="タイトル" />
-            </GridViewColumn>
-          </GridView>
-        </ListView.View>
-            -->
-      </ListView>
+      <ListBox Grid.Row="1" Grid.Column="1" x:Name="lstSearchResultView" SelectionMode="Single">
+        <ListBox.ItemContainerStyle>
+          <Style>
+            <Setter Property="Control.Height" Value="30"/>
+          </Style>
+        </ListBox.ItemContainerStyle>
+      </ListBox>
     <!-- （Ｃ） -->
       <Grid Grid.Row="2" Grid.Column="1">
         <Grid.ColumnDefinitions>
