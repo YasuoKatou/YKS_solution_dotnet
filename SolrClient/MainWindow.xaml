@@ -30,7 +30,15 @@
           <RowDefinition />
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" Grid.Column="0" FontSize="12" FontWeight="Bold" HorizontalAlignment="Right" VerticalAlignment="Center">検索文字列</TextBlock>
-        <TextBox   Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="20,0" x:Name="txtSearchWord"></TextBox>
+        <TextBox   Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="20,0" x:Name="txtSearchWord">
+          <TextBox.ToolTip>
+            <ToolTip>
+              <DockPanel Width="Auto" Height="Auto">
+                <TextBlock>検索文字列を入力します.</TextBlock>
+              </DockPanel>
+            </ToolTip>
+          </TextBox.ToolTip>
+        </TextBox>
         <Button    Grid.Row="0" Grid.Column="2" Margin="0,5" x:Name="btnSearch">検索</Button>
       </Grid>
 
