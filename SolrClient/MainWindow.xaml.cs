@@ -32,6 +32,22 @@ namespace solr.client
 
             // 検索ボタンのクリックイベントを設定
             this.btnSearch.Click += this.btnSearch_Click;
+            // 検索結果一覧のダブルクリックイベントを設定
+            this.lstSearchResultView.MouseDoubleClick += this.resultListDoubleClicked;
+        }
+
+        void resultListDoubleClicked(object sender, RoutedEventArgs e)
+        {
+            if (sender is ListBox)
+            {
+                // Console.WriteLine("resultListDoubleClicked : " + (sender as ListBox).SelectedItem.ToString());
+                if ((sender as ListBox).SelectedItem is SearchDocument)
+                {
+                    SearchDocument doc = ((sender as ListBox).SelectedItem as SearchDocument);
+                    System.Diagnostics.Process.Start(doc.og_url[0]);
+                }
+            }
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -51,18 +67,25 @@ namespace solr.client
             this.txtQTime.Text = String.Format("検索時間 : {0} ms", dto.responseHeader.QTime);
 
             Binding bind = new Binding();
-            bind.Source = new SearchResultTitles(dto.responseData.docs);
+            bind.Source = dto.responseData.docs.ToList();
             this.lstSearchResultView.SetBinding(ListBox.ItemsSourceProperty, bind);
         }
     }
-    public class SearchResultTitles : ObservableCollection<string>
+    // [ValueConversion(typeof(sourceType), typeof(targetType))]
+    public class ListTitleDataConverter : IValueConverter
     {
-        public SearchResultTitles(SearchDocument[] docs)
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            foreach (SearchDocument docItem in docs)
+            if (value is SearchDocument)
             {
-                this.Add(docItem.title[0]);
+                return (value as SearchDocument).title[0];
             }
+            return value.ToString();
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            throw new NotImplementedException();
         }
     }
 }

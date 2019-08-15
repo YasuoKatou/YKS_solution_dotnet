@@ -4,8 +4,14 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SolrClient"
+        xmlns:dto="clr-namespace:solr.client.dto"
+        xmlns:view="clr-namespace:solr.client"
         mc:Ignorable="d"
         Title="Solr クライアント" Height="450" Width="800">
+    <Window.Resources>
+      <dto:SearchDocument x:Key="searchDocument"/>
+      <view:ListTitleDataConverter x:Key="dataConverter"/>
+    </Window.Resources>
     <!--Grid ShowGridLines="True"-->
     <Grid>
       <Grid.ColumnDefinitions>
@@ -43,7 +49,14 @@
       </Grid>
 
     <!-- （Ｂ） -->
-      <ListBox Grid.Row="1" Grid.Column="1" x:Name="lstSearchResultView" SelectionMode="Single">
+      <ListBox Grid.Row="1" Grid.Column="1" x:Name="lstSearchResultView" SelectionMode="Single"
+        IsSynchronizedWithCurrentItem="True"
+        ItemsSource="{Binding Source={StaticResource searchDocument}}">
+        <ListBox.ItemTemplate>
+          <DataTemplate>
+            <ContentPresenter Content="{Binding Converter={StaticResource dataConverter}}"/>
+          </DataTemplate>
+        </ListBox.ItemTemplate>
         <ListBox.ItemContainerStyle>
           <Style>
             <Setter Property="Control.Height" Value="30"/>
