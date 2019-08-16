@@ -44,10 +44,22 @@ namespace solr.client
                 if ((sender as ListBox).SelectedItem is SearchDocument)
                 {
                     SearchDocument doc = ((sender as ListBox).SelectedItem as SearchDocument);
-                    System.Diagnostics.Process.Start(doc.og_url[0]);
+                    this.openDefaultWebBrowsew(doc.og_url[0]);
+                    return;
                 }
             }
             throw new NotImplementedException();
+        }
+
+        private void openDefaultWebBrowsew(string uri)
+        {
+            try {
+                System.Diagnostics.Process.Start("explorer.exe", uri);
+            } catch (System.ComponentModel.Win32Exception ex) {
+                MessageBox.Show(ex.Message);
+                MessageBox.Show(ex.Message, "エラー"
+                            , System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+            }
         }
 
         /// <summary>
