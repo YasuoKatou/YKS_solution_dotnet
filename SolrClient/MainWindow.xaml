@@ -7,7 +7,7 @@
         xmlns:dto="clr-namespace:solr.client.dto"
         xmlns:view="clr-namespace:solr.client"
         mc:Ignorable="d"
-        Title="Solr クライアント" Height="450" Width="800">
+        Title="Solr クライアント" Height="600" Width="800">
     <Window.Resources>
       <dto:SearchDocument x:Key="searchDocument"/>
       <view:ListTitleDataConverter x:Key="dataConverter"/>
@@ -81,8 +81,8 @@
         <Grid.RowDefinitions>
           <RowDefinition />
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" x:Name="txtQTime"></TextBlock>
-        <TextBlock Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" x:Name="txt2"></TextBlock>
+        <TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" x:Name="txtNums"></TextBlock>
+        <TextBlock Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" x:Name="txtQTime"></TextBlock>
         <TextBlock Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" x:Name="txt3"></TextBlock>
       </Grid>
 

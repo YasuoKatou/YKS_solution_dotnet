@@ -90,6 +90,15 @@ namespace solr.client
                 rows = (this.cbxResultRows.SelectedItem as ComboBoxItem).Tag.ToString();
             }
             SolrSearchResponseDto dto = this.webService.searchString<SolrSearchResponseDto>(searchWord, rows);
+            var resp = dto.responseData;
+            string tailNum = "";
+            if (rows != null)
+            {
+                var num = int.Parse(rows) + resp.start;
+                if (num > resp.numFound) num = resp.numFound;
+                tailNum = num.ToString();
+            }
+            this.txtNums.Text  = String.Format("{0} - {1} ({2})", resp.start + 1, tailNum, resp.numFound);
             this.txtQTime.Text = String.Format("検索時間 : {0} ms", dto.responseHeader.QTime);
 
             Binding bind = new Binding();
