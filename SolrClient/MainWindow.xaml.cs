@@ -37,6 +37,9 @@ namespace solr.client
             this.lstSearchResultView.MouseDoubleClick += this.resultListDoubleClicked;
         }
 
+        /// <summary>
+        /// 検索結果一覧表示の行をダブルクリック
+        /// </summary>
         void resultListDoubleClicked(object sender, RoutedEventArgs e)
         {
             if (sender is ListBox)
@@ -52,6 +55,9 @@ namespace solr.client
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// 指定のuriをWebブラウザで開く
+        /// </summary>
         private void openDefaultWebBrowsew(string uri)
         {
             try {
@@ -78,7 +84,12 @@ namespace solr.client
                             , System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Question);
                 return;
             }
-            SolrSearchResponseDto dto = this.webService.searchString<SolrSearchResponseDto>(searchWord);
+            string rows = null;
+            if (this.cbxResultRows.SelectedItem is ComboBoxItem)
+            {
+                rows = (this.cbxResultRows.SelectedItem as ComboBoxItem).Tag.ToString();
+            }
+            SolrSearchResponseDto dto = this.webService.searchString<SolrSearchResponseDto>(searchWord, rows);
             this.txtQTime.Text = String.Format("検索時間 : {0} ms", dto.responseHeader.QTime);
 
             Binding bind = new Binding();

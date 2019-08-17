@@ -31,6 +31,7 @@
           <ColumnDefinition Width="100" />
           <ColumnDefinition />
           <ColumnDefinition Width="40" />
+          <ColumnDefinition Width="80"  />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
           <RowDefinition />
@@ -46,6 +47,13 @@
           </TextBox.ToolTip>
         </TextBox>
         <Button    Grid.Row="0" Grid.Column="2" Margin="0,5" x:Name="btnSearch">検索</Button>
+        <ComboBox  Grid.Row="0" Grid.Column="3" Margin="10,5,0,5" x:Name="cbxResultRows"
+          IsReadOnly="true" IsEditable="false">
+          <ComboBoxItem Tag="10">10 行</ComboBoxItem>
+          <ComboBoxItem Tag="20" IsSelected="True">20 行</ComboBoxItem>
+          <ComboBoxItem Tag="50">50 行</ComboBoxItem>
+          <ComboBoxItem Tag="100">100 行</ComboBoxItem>
+        </ComboBox>
       </Grid>
 
     <!-- （Ｂ） -->
