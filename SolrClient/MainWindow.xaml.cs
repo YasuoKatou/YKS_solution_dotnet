@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Diagnostics;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -54,7 +55,9 @@ namespace solr.client
         private void openDefaultWebBrowsew(string uri)
         {
             try {
-                System.Diagnostics.Process.Start("explorer.exe", uri);
+                var app = new ProcessStartInfo(uri);
+                app.UseShellExecute = true;
+                Process.Start(app);
             } catch (System.ComponentModel.Win32Exception ex) {
                 MessageBox.Show(ex.Message);
                 MessageBox.Show(ex.Message, "エラー"
