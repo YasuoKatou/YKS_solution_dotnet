@@ -28,10 +28,12 @@
       <!-- （Ａ） -->
       <Grid Grid.Row="0" Grid.Column="1">
         <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="100" />
-          <ColumnDefinition />
-          <ColumnDefinition Width="40" />
-          <ColumnDefinition Width="80"  />
+          <ColumnDefinition Width="100" />  <!--(+0) 検索文字列入力タイトル-->
+          <ColumnDefinition />              <!--(+1) 検索文字列入力エリア-->
+          <ColumnDefinition Width="40" />   <!--(+2) 検索ボタン-->
+          <ColumnDefinition Width="80" />   <!--(+3) レスポンスドキュメント数設定コンボボックス-->
+          <ColumnDefinition Width="60" />   <!--(+4) 前ページ移動ボタン-->
+          <ColumnDefinition Width="40" />   <!--(+5) 次ページ移動ボタン-->
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
           <RowDefinition />
@@ -54,6 +56,8 @@
           <ComboBoxItem Tag="50">50 行</ComboBoxItem>
           <ComboBoxItem Tag="100">100 行</ComboBoxItem>
         </ComboBox>
+        <Button    Grid.Row="0" Grid.Column="4" Margin="30,5,0,5" x:Name="btnPrev">&lt;&lt;</Button>
+        <Button    Grid.Row="0" Grid.Column="5" Margin="10,5,0,5" x:Name="btnNext">&gt;&gt;</Button>
       </Grid>
 
     <!-- （Ｂ） -->
@@ -71,6 +75,7 @@
           </Style>
         </ListBox.ItemContainerStyle>
       </ListBox>
+
     <!-- （Ｃ） -->
       <Grid Grid.Row="2" Grid.Column="1">
         <Grid.ColumnDefinitions>

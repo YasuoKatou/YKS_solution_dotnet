@@ -23,16 +23,13 @@ namespace solr.client.Service
         {
             Console.WriteLine("SolrService !");
         }
-        public T searchString<T>(String keyWord, String rows = null) where T : new()
+        public T searchString<T>(String keyWord, int start, int rows) where T : new()
         {
             //Console.WriteLine("searchString : key word = " + keyWord);
             // URLを編集
             string getOpts = "q=" + HttpUtility.UrlEncode(keyWord) + this.makeOptions();
             string url = HTTP_SCHEMA + HOST_NAME + URL_SERVICE + '?' + getOpts;
-            if (rows != null)
-            {
-                url += "&rows=" + rows;
-            }
+            url += "&start=" + start.ToString() + "&rows=" + rows.ToString();
             Console.WriteLine("searchString : uri = " + url);
 
             WebRequest request = WebRequest.Create(url);
@@ -43,7 +40,7 @@ namespace solr.client.Service
             Stream dataStream = response.GetResponseStream ();
             StreamReader reader = new StreamReader(dataStream);
             string responseData = reader.ReadToEnd();
-            Console.WriteLine("searchString : Response　response data = " + responseData);
+            // Console.WriteLine("searchString : Response　response data = " + responseData);
 
             reader.Close ();
             dataStream.Close();

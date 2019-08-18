@@ -20,12 +20,20 @@ using solr.client.dto;
 
 namespace solr.client
 {
+    public class SearchInfo
+    {
+        public string keyWord { get; set; }
+        public int startIndex { get; set; }
+        public int numFound { get; set; }
+    }
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class SolrClient : Window
     {
         private SolrService webService = new SolrService();
+        private SearchInfo searchInfo = null;
 
         public SolrClient()
         {
@@ -35,8 +43,11 @@ namespace solr.client
             this.btnSearch.Click += this.btnSearch_Click;
             // 検索結果一覧のダブルクリックイベントを設定
             this.lstSearchResultView.MouseDoubleClick += this.resultListDoubleClicked;
+            // 前ページ表示イベントを設定
+            this.btnPrev.Click += this.btnPrev_Click;
+            // 次ページ表示イベントを設定
+            this.btnNext.Click += this.btnNext_Click;
         }
-
         /// <summary>
         /// 検索結果一覧表示の行をダブルクリック
         /// </summary>
@@ -74,7 +85,7 @@ namespace solr.client
         /// <summary>
         /// 検索ボタンクリックイベント
         /// </summary>        
-        void btnSearch_Click(object sender, System.Windows.RoutedEventArgs e)
+        void btnSearch_Click(object sender, RoutedEventArgs e)
         {
             //Console.WriteLine("検索ワード : " + c.Text);
             string searchWord = this.txtSearchWord.Text;
@@ -84,26 +95,66 @@ namespace solr.client
                             , System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Question);
                 return;
             }
-            string rows = null;
-            if (this.cbxResultRows.SelectedItem is ComboBoxItem)
-            {
-                rows = (this.cbxResultRows.SelectedItem as ComboBoxItem).Tag.ToString();
-            }
-            SolrSearchResponseDto dto = this.webService.searchString<SolrSearchResponseDto>(searchWord, rows);
+            this.doSearch(searchWord, 0, this.getRsultDocumentCount());
+        }
+
+        /// <summary>
+        /// 検索処理
+        /// </summary>
+        private void doSearch(string searchWord, int start, int rows)
+        {
+            SolrSearchResponseDto dto = this.webService.searchString<SolrSearchResponseDto>(searchWord, start, rows);
             var resp = dto.responseData;
-            string tailNum = "";
-            if (rows != null)
-            {
-                var num = int.Parse(rows) + resp.start;
-                if (num > resp.numFound) num = resp.numFound;
-                tailNum = num.ToString();
-            }
-            this.txtNums.Text  = String.Format("{0} - {1} ({2})", resp.start + 1, tailNum, resp.numFound);
+            var num = rows + resp.start;
+            if (num > resp.numFound) num = resp.numFound;
+            this.txtNums.Text  = String.Format("{0} - {1} ({2})", resp.start + 1, num, resp.numFound);
             this.txtQTime.Text = String.Format("検索時間 : {0} ms", dto.responseHeader.QTime);
 
             Binding bind = new Binding();
             bind.Source = dto.responseData.docs.ToList();
             this.lstSearchResultView.SetBinding(ListBox.ItemsSourceProperty, bind);
+
+            this.searchInfo = new SearchInfo();
+            this.searchInfo.keyWord = searchWord;
+            this.searchInfo.startIndex = start;
+            this.searchInfo.numFound = resp.numFound;
+        }
+        /// <summary>
+        /// 取得するドキュメント数を取得する.
+        /// </summary>
+        private int getRsultDocumentCount()
+        {
+            if (this.cbxResultRows.SelectedItem is ComboBoxItem)
+            {
+                return int.Parse((this.cbxResultRows.SelectedItem as ComboBoxItem).Tag.ToString());
+            }
+            return 10;
+        }
+        /// <summary>
+        /// 前ページ表示ボタンクリック
+        /// </summary>
+        void btnPrev_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.searchInfo == null) return;
+
+            int rows = this.getRsultDocumentCount();
+            int start = this.searchInfo.startIndex - rows;
+            if (start < 0) start = 0;
+
+            this.doSearch(this.searchInfo.keyWord, start, this.getRsultDocumentCount());
+        }
+        /// <summary>
+        /// 次ページ表示ボタンクリック
+        /// </summary>
+        void btnNext_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.searchInfo == null) return;
+
+            int rows = this.getRsultDocumentCount();
+            int start = this.searchInfo.startIndex + rows;
+            if (start > searchInfo.numFound) return;
+
+            this.doSearch(this.searchInfo.keyWord, start, this.getRsultDocumentCount());
         }
     }
     // [ValueConversion(typeof(sourceType), typeof(targetType))]
