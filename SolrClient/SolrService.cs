@@ -27,7 +27,7 @@ namespace solr.client.Service
         {
             //Console.WriteLine("searchString : key word = " + keyWord);
             // URLを編集
-            string getOpts = "q=" + HttpUtility.UrlEncode(keyWord) + this.makeOptions();
+            string getOpts = "q=description" + HttpUtility.UrlEncode(":" + keyWord) + this.makeOptions();
             string url = HTTP_SCHEMA + HOST_NAME + URL_SERVICE + '?' + getOpts;
             url += "&start=" + start.ToString() + "&rows=" + rows.ToString();
             Console.WriteLine("searchString : uri = " + url);
